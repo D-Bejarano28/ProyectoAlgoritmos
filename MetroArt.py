@@ -62,7 +62,75 @@ class MetroArt:
             d_nuevo = Departamento(departamento['departmentId'],departamento['displayName'])
             self.lista_departamentos.append(d_nuevo)
 
-    
+
+    def crear_obras(self):
+        self.lista_obras = []
+        for obra in self.obras_info:
+            if obra['artistDisplayName'] == '':
+                nombre_artista = 'Anónimo'
+            else:
+                nombre_artista = obra['artistDisplayName']
+
+            if obra['artistNationality'] == '':
+                nacionalidad_artista = 'Desconocida'
+            else:
+                nacionalidad_artista = obra['artistNationality']
+            o_nueva = Obra(obra['objectID'],obra['title'],nombre_artista,
+                           nacionalidad_artista,obra['artistBeginDate'],obra['artistEndDate'],
+                           obra['classification'],obra['objectBeginDate'],obra['primaryImage'])
+            self.lista_obras.append(o_nueva)
+
+
+    def crear_autores(self):
+        self.lista_autores = []
+        
+        for autor in self.obras_info:
+            lista_obras = []
+            for obra in self.lista_obras:
+                if obra.nombre_artista == autor['artistDisplayName']:
+                    lista_obras.append(obra)
+
+                if autor['artistDisplayName'] == '':
+                    nombre_encontrado = 'Anónimo'
+                else:
+                    nombre_encontrado = autor['artistDisplayName']
+
+                if autor['artistNationality'] == '':
+                    nacionalidad = 'Anónimo'
+                else:
+                    nacionalidad = autor['artistNationality']
+
+            a_nuevo = Autor(nombre_encontrado,nacionalidad,lista_obras)
+            self.lista_autores.append(a_nuevo)
+
+
     def mostrar_departamentos(self):
         for departamento in self.lista_departamentos:
                 print(f'{departamento.id} -- {departamento.nombre}')
+
+
+    def mostrar_obras(self):
+        for i in self.lista_obras:
+                i.mostrar()
+                print('_______________________________________________________________________')
+
+
+    def mostrar_autores(self):
+        lista_nombres_autor = []
+        for autor in self.lista_autores:
+            lista_nombres_autor.append(autor.nombre)
+            set_muestra = set(lista_nombres_autor)
+        for nombre in set_muestra:
+            print()
+            print(nombre)
+        opcion_autor = input('Ingrese el nombre del autor deseado:')
+        for autor in self.lista_autores:
+            if autor.nombre == opcion_autor:
+                vista_autor = autor
+        if not vista_autor:
+            print('Autor no encontrado!!!')
+
+        print(vista_autor.nombre)
+        for obra in vista_autor.obras:
+            obra.mostrar()
+            print('___________________________________________________________________________')
