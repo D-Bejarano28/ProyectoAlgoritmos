@@ -32,6 +32,8 @@ class MetroArt:
 
 
             self.obras_info = obra_arte(int(opcion),0)
+            #Creamos un contador que nos permita segmentar la lista de ids para obtener mas obras
+            self.contador = 0
             # Creacion de todos los objetos obra y autores
             self.crear_obras()
             self.crear_autores()
@@ -68,8 +70,28 @@ class MetroArt:
                     else:
                         if self.opcion_imagen():
                             guardar_imagen_desde_url(obra.img, 'vista')
+
             elif menu == '3':
-                pass     
+                # Incrementamos el contador para obtener el siguiente lote
+                    self.contador_obras += 20
+                    print("\nCargando más obras...")
+                    
+                    # Llamamos a la API con el nuevo índice
+                    nuevas_obras = obra_arte(int(opcion), self.contador_obras)
+
+                    if not nuevas_obras:
+                        print("No hay más obras para mostrar en este departamento.")
+                    else:
+                        # Añadimos la nueva información a la lista existente
+                        self.obras_info += nuevas_obras
+                        
+                        # Volvemos a crear los objetos para incluir los nuevos
+                        self.crear_obras()
+                        self.crear_autores()
+                        
+                        print("\n--- Lista de obras actualizada ---")
+                        self.mostrar_obras()
+                  
             elif menu == '4':
                 break
 
