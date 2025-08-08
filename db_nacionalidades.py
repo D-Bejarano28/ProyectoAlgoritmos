@@ -1,3 +1,4 @@
+#Esta lista se utiliza en la aplicación para filtrar las obras de arte por la nacionalidad del artista
 db_nacionalidades = [
     'Afghan'
 ,'Albanian'

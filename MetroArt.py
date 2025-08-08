@@ -7,12 +7,19 @@ from api_management import *
 from Image import *
 
 class MetroArt:
-
+    # Clase principal que gestiona la lógica de la aplicación. Aqui se encuentran los menus,las 
+    # funciones encargadas de crear los objetos permite la visualización de la información solicitada por el usuario
     def __init__(self,db_departamentos,db_nacionalidades):
+        # Inicializa la aplicación MetroArt
+
+        # Argumentos usados:
+        # db_departamentos (dict): Un diccionario con la información de los departamentos de arte.
+        # db_nacionalidades (list): Una lista de nacionalidades de artistas.
         self.db_departamentos = db_departamentos
         self.db_nacionalidades = db_nacionalidades
 
     def inicio(self):
+        # Inicia el bucle principal y maneja el menú de navegación
         self.crear_departamentos()
 
         while True:
@@ -98,6 +105,7 @@ class MetroArt:
 
 
     def crear_departamentos(self):
+        # Crea una lista de objetos de tipo Departamento a partir de los datos iniciales
         self.lista_departamentos = []
         departamento_info = self.db_departamentos['departments']
         for departamento in departamento_info:
@@ -106,6 +114,8 @@ class MetroArt:
 
 
     def crear_obras(self):
+        # Crea una lista de objetos de tipo Obra a partir de la información obtenida de la API. Esta asigna valores por defecto si 
+        # falta información del artista
         self.lista_obras = []
         for obra in self.obras_info:
             if obra['artistDisplayName'] == '':
@@ -124,6 +134,7 @@ class MetroArt:
 
 
     def crear_autores(self):
+        # Crea una lista de objetos de tipo Autor a partir de la información de las obras, agrupando las obras por cada autor.
         self.lista_autores = []
         
         for autor in self.obras_info:
@@ -147,17 +158,20 @@ class MetroArt:
 
 
     def mostrar_departamentos(self):
+        # Imprime en la terminal la lista de departamentos disponibles
         for departamento in self.lista_departamentos:
                 print(f'{departamento.id} -- {departamento.nombre}')
 
 
     def mostrar_obras(self):
+        # Imprime en la consola un resumen de cada obra en la lista actual
         for i in self.lista_obras:
                 i.mostrar()
                 print('_______________________________________________________________________')
 
     def mostrar_obra_nacionalidad(self):
-
+        # Permite al usuario seleccionar una nacionalidad de una lista para filtrar y
+        # mostrar las obras de artistas de esa nacionalidad
         cont = 0
         
         for index,nacionalidad in enumerate(self.db_nacionalidades):
@@ -181,6 +195,7 @@ class MetroArt:
 
 
     def mostrar_autores(self):
+        #  Muestra una lista de autores únicos y permite al usuario seleccionar uno para ver todas sus obras
         lista_nombres_autor = []
         for autor in self.lista_autores:
             lista_nombres_autor.append(autor.nombre)
@@ -202,6 +217,7 @@ class MetroArt:
 
 
     def mostrar_detalles(self):
+        # Solicita al usuario el numero ID de una obra y muestra los detalles especificos para cada obra
         cont = 0
         opcion_obra = input('Ingrese el id correspondeinte a la obra que desea detallar: ')
 
@@ -221,7 +237,7 @@ class MetroArt:
             
 
     def opcion_detalles(self):
-
+        # Pregunta al usuario si desea ver los detalles de una obra
         opcion = input('''
         Desea ver los detalles de la obra?
         1. Si
@@ -237,6 +253,7 @@ class MetroArt:
         
 
     def opcion_imagen():
+        # Pregunta al usuario si desea ver la imagen de una obra
         opcion = input('''
         Desea ver la imagen?
         1. Si
