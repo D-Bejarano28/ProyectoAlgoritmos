@@ -1,6 +1,7 @@
 import requests
 
-# La funcion get_data_deparments nos permitira almacenar los datos de la API correspondientes a los departamentos
+# La funcion get_departamentos nos permitira almacenar los datos de la API correspondientes a los departamentos
+# Estos datos corresponden a los IDs y nombres de departamentos
 
 def get_departamentos():
     URL = "https://collectionapi.metmuseum.org/public/collection/v1/departments"
@@ -8,7 +9,7 @@ def get_departamentos():
     data = response.json()
     return data
 
-# La funcion get_ids nos permitira obtener los IDs de las obras de arte por departamento
+# La funcion get_ids nos permitira obtener los IDs de las obras. Retorna una lisra contodos los IDs de las obras por departamento
 
 def get_ids(id):
     
@@ -21,19 +22,31 @@ def get_ids(id):
     return ids_list
 
 
-# Esta funcion nos permitira obtener la informacion compketa para cada obra de arte 
+# Esta funcion nos permitira obtener la informacion completa para cada obra de arte.
+# Almacenará cada obra de arte en una lista.
 
-def obra_arte(id_department):
+def obra_arte(id_department,param):
+
+    #LLamamos a la funcion para obtener los ids
 
     ids_list = get_ids(id_department)
 
-    lista_obras = []
+    lista_obras = [] # Creamos la lista donde se almacenaran las obras
+    primer_index = param # Estos indices nos permitiran ir obteniendo informacion de las obras por segmento
+    ultimo_index = param + 20
 
-    for id in ids_list[:20]:
+    for id in ids_list[primer_index:ultimo_index]:
+        # Al URL se le concatena un id para obtener la informacion de la obra que luego se agregará a la lista
         URL = "https://collectionapi.metmuseum.org/public/collection/v1/objects/"+str(id)
-        response = requests.get(URL)
-        obra = response.json()
-        lista_obras.append(obra)
+        try:
+
+            response = requests.get(URL)
+            response.raise_for_status()
+            obra = response.json()
+            if obra:
+                lista_obras.append(obra)
+        except requests.exceptions.RequestException:
+            continue
     return lista_obras
    
 
