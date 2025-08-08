@@ -1,7 +1,11 @@
 import requests
 
+<<<<<<< HEAD
 # La funcion get_departamentos nos permitira almacenar los datos de la API correspondientes a los departamentos
 # Estos datos corresponden a los IDs y nombres de departamentos
+=======
+# La funcion get_deparmentos nos permitira almacenar los datos de la API correspondientes a los departamentos
+>>>>>>> 198ebe553b0ea143a8eeb7296877016dc88bc5f5
 
 def get_departamentos():
     URL = "https://collectionapi.metmuseum.org/public/collection/v1/departments"
@@ -22,8 +26,12 @@ def get_ids(id):
     return ids_list
 
 
+<<<<<<< HEAD
 # Esta funcion nos permitira obtener la informacion completa para cada obra de arte.
 # Almacenará cada obra de arte en una lista.
+=======
+# Esta funcion nos permitira obtener la informacion completa para cada obra de arte 
+>>>>>>> 198ebe553b0ea143a8eeb7296877016dc88bc5f5
 
 def obra_arte(id_department,param):
 
