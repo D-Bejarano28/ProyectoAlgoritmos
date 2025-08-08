@@ -31,6 +31,11 @@ class MetroArt:
 
 
             self.obras_info = obra_arte(int(opcion),0)
+            # Creacion de todos los objetos obra y autores
+            self.crear_obras()
+            self.crear_autores()
+            # Muestra de obras para el departamento seleccionado
+            self.mostrar_obras()
 
             menu = input('''
             ¿Ahora que deseas hacer?
@@ -45,9 +50,13 @@ class MetroArt:
                 menu = input('Dato Inválido!! Ingrese un numero que corresponda a la opción que desea:  ')
 
             if menu == '1':
-                pass    
+                self.mostrar_autores()
+                if self.opcion_detalles():
+                    obra = self.mostrar_detalles()   
             elif menu == '2':
-                pass 
+                self.mostrar_obra_nacionalidad()
+                if self.opcion_detalles():
+                    obra = self.mostrar_detalles()
             elif menu == '3':
                 pass     
             elif menu == '4':
@@ -114,6 +123,29 @@ class MetroArt:
                 i.mostrar()
                 print('_______________________________________________________________________')
 
+    def mostrar_obra_nacionalidad(self):
+
+        cont = 0
+        
+        for index,nacionalidad in enumerate(self.db_nacionalidades):
+            print(f'{index} - {nacionalidad}')
+            print()
+
+        opcion_nacionalidad = input('Ingrese el numero  correspondiente a la nacionalidad del autor: ')
+        while not opcion_nacionalidad.isnumeric() or int(opcion_nacionalidad) not in range(len(self.db_nacionalidades)+1):
+            opcion_nacionalidad = input('Dato inválido!! Inngrese un numero que corresponda con una nacionalidad: ')
+
+        nacionalidad_encontrada = self.db_nacionalidades[int(opcion_nacionalidad)]
+
+        for obra in self.lista_obras:
+            if obra.nacionalidad_artista == nacionalidad_encontrada:
+                obra.mostrar()
+                print('__________________________________________________________________________')
+                cont += 1
+
+        if cont == 0:
+            print('No econtramos un artista con esa nacionalidad!')
+
 
     def mostrar_autores(self):
         lista_nombres_autor = []
@@ -134,3 +166,38 @@ class MetroArt:
         for obra in vista_autor.obras:
             obra.mostrar()
             print('___________________________________________________________________________')
+
+
+    def mostrar_detalles(self):
+        cont = 0
+        opcion_obra = input('Ingrese el id correspondeinte a la obra que desea detallar: ')
+
+        while not opcion_obra.isnumeric():
+            opcion_obra = input('El dato que ingresó no es válido!! Ingrese un id correspondiente a una obra: ')
+
+        for obra in self.lista_obras:
+            if int(opcion_obra) == obra.id:
+                obra_encontrada = obra
+                obra_encontrada.mostrar_detalles()
+                cont += 1
+
+        if cont == 1:
+            return obra_encontrada
+        else:
+            print('No se encontró ninguna obra con ese id!!')
+            
+
+    def opcion_detalles(self):
+
+        opcion = input('''
+        Desea ver los detalles de la obra?
+        1. Si
+        2. No 
+        ''')
+        while not opcion.isnumeric() or int(opcion) not in range(1,3):
+            opcion = input('Dato invalido!! Ingrese un numero correspondiente a la opcion: ')
+
+        if opcion == '1':
+            return True
+        else:
+            return False
