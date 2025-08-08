@@ -4,6 +4,7 @@ from Departamento import Departamento
 from Autor import Autor
 from Obra import Obra
 from api_management import *
+from Image import *
 
 class MetroArt:
 
@@ -52,11 +53,21 @@ class MetroArt:
             if menu == '1':
                 self.mostrar_autores()
                 if self.opcion_detalles():
-                    obra = self.mostrar_detalles()   
+                    obra = self.mostrar_detalles()
+                    if obra.img == '':
+                        print('Imagen no disponible!!')
+                    else:
+                        if self.opcion_imagen():
+                            guardar_imagen_desde_url(obra.img, 'vista') 
             elif menu == '2':
                 self.mostrar_obra_nacionalidad()
                 if self.opcion_detalles():
                     obra = self.mostrar_detalles()
+                    if obra.img == '':
+                        print('Imagen no disponible!!')
+                    else:
+                        if self.opcion_imagen():
+                            guardar_imagen_desde_url(obra.img, 'vista')
             elif menu == '3':
                 pass     
             elif menu == '4':
@@ -201,3 +212,19 @@ class MetroArt:
             return True
         else:
             return False
+        
+
+    def opcion_imagen():
+        opcion = input('''
+        Desea ver la imagen?
+        1. Si
+        2. No 
+        ''')
+        while not opcion.isnumeric() or int(opcion) not in range(1,3):
+            opcion = input('Dato invalido!! Ingrese un numero correspondiente a la opcion: ')
+
+        if opcion == '1':
+            return True
+        else:
+            return False
+        
