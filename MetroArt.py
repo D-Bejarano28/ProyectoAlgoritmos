@@ -40,7 +40,7 @@ class MetroArt:
 
             self.obras_info = obra_arte(int(opcion),0)
             #Creamos un contador que nos permita segmentar la lista de ids para obtener mas obras
-            self.contador = 0
+            self.contador_obras = 0
             # Creacion de todos los objetos obra y autores
             self.crear_obras()
             self.crear_autores()
@@ -60,23 +60,27 @@ class MetroArt:
                 menu = input('Dato Inválido!! Ingrese un numero que corresponda a la opción que desea:  ')
 
             if menu == '1':
-                self.mostrar_autores()
-                if self.opcion_detalles():
-                    obra = self.mostrar_detalles()
-                    if obra.img == '':
-                        print('Imagen no disponible!!')
-                    else:
-                        if self.opcion_imagen():
-                            guardar_imagen_desde_url(obra.img, 'vista') 
+                if self.mostrar_autores():
+                    if self.opcion_detalles():
+                        obra = self.mostrar_detalles()
+                        if obra.img == '':
+                            print('Imagen no disponible!!')
+                        else:
+                            if self.opcion_imagen():
+                                guardar_imagen_desde_url(obra.img, 'vista')
+                else:
+                    print() 
             elif menu == '2':
-                self.mostrar_obra_nacionalidad()
-                if self.opcion_detalles():
-                    obra = self.mostrar_detalles()
-                    if obra.img == '':
-                        print('Imagen no disponible!!')
-                    else:
-                        if self.opcion_imagen():
-                            guardar_imagen_desde_url(obra.img, 'vista')
+                if self.mostrar_obra_nacionalidad():
+                    if self.opcion_detalles():
+                        obra = self.mostrar_detalles()
+                        if obra.img == '':
+                            print('Imagen no disponible!!')
+                        else:
+                            if self.opcion_imagen():
+                                guardar_imagen_desde_url(obra.img, 'vista')
+                else:
+                    print()
 
             elif menu == '3':
                 # Incrementamos el contador para obtener el siguiente lote
@@ -192,6 +196,9 @@ class MetroArt:
 
         if cont == 0:
             print('No econtramos un artista con esa nacionalidad!')
+            return False
+        else:
+            return True
 
 
     def mostrar_autores(self):
@@ -207,13 +214,19 @@ class MetroArt:
         for autor in self.lista_autores:
             if autor.nombre == opcion_autor:
                 vista_autor = autor
-        if not vista_autor:
-            print('Autor no encontrado!!!')
+            else:
+                vista_autor = None
 
-        print(vista_autor.nombre)
-        for obra in vista_autor.obras:
-            obra.mostrar()
-            print('___________________________________________________________________________')
+        if vista_autor:
+            print(vista_autor.nombre)
+            for obra in vista_autor.obras:
+                obra.mostrar()
+                print('___________________________________________________________________________')
+            return True
+
+        else:
+            print('\nAutor no encontrado!!')
+            return False
 
 
     def mostrar_detalles(self):
@@ -252,7 +265,7 @@ class MetroArt:
             return False
         
 
-    def opcion_imagen():
+    def opcion_imagen(self):
         # Pregunta al usuario si desea ver la imagen de una obra
         opcion = input('''
         Desea ver la imagen?
